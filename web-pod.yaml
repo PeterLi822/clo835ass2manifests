@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: web
+  namespace: web-ns
+  labels:
+    app: employees
+spec:
+  containers:
+  - name: web
+    image: 436713110806.dkr.ecr.us-east-1.amazonaws.com/my-app-repo:v_red
+    ports:
+    - containerPort: 8080
+    env:
+    - name: DBHOST
+      value: "mysql.mysql-ns.svc.cluster.local"
+    - name: DBPORT
+      value: "3306"
+    - name: DBUSER
+      value: "root"
+    - name: DBPWD
+      value: clo835ass2
+
+

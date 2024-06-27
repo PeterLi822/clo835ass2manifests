@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-deployment
+  namespace: web-ns
+  labels:
+    app: employees
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: employees
+  template:
+    metadata:
+      labels:
+        app: employees
+    spec:
+      containers:
+      - name: web
+        image: 436713110806.dkr.ecr.us-east-1.amazonaws.com/my-app-repo:v_red
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+        ports:
+          - containerPort: 8080
+            protocol: TCP
+        env:
+          - name: DBHOST
+            value: "mysql.mysql-ns.svc.cluster.local"
+          - name: DBPORT
+            value: "3306"
+          - name: DBUSER
+            value: "root"
+          - name: DBPWD
+            value: "clo835ass2"
+          - name: DATABASE
+            value: "employees"
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  revisionHistoryLimit: 10
+
